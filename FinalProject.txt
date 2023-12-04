@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Landscape</title>
+    <style>
+      body {
+        margin: 0;
+      }
+
+      canvas {
+        display: block;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+      let scene, camera, renderer;
+
+      function init() {
+        const canvasWidth = 750;
+        const canvasHeight = 750;
+
+
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x87ceeb);
+
+        camera = new THREE.PerspectiveCamera(75, canvasWidth / canvasHeight, 1, 1000);
+        camera.position.z = 1000;
+
+        renderer = new THREE.WebGLRenderer({
+          antialias: true
+        });
+        renderer.setSize(canvasWidth, canvasHeight);
+        document.body.appendChild(renderer.domElement);
+        let mountain1, mountain2, mountain3, snow, grass, grassGroup, trunk, leaves, sun, appleGroup, birds, birdsGroup, cloud, apple;
+
+        Mountain2();
+        Mountain3();
+        Mountain1();
+        Snow();
+        createGrass();
+        createGrassblades();
+        Trunk();
+        Leaves();
+        Apples();
+        fallingApple();
+        Sun();
+        Cloud();
+        Birds();
+        animate();
+
+      }
+
+      function Mountain1() {
+        let triangleGeometry = new THREE.BufferGeometry();
+        const vertices = [
+          0, 300, 0,
+          -600, -600, 0,
+          600, -600, 0
+        ];
+        const indices = [
+          0, 1, 2
+        ];
+
+        triangleGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+        triangleGeometry.setIndex(indices);
+
+        const material = new THREE.MeshBasicMaterial({
+          color: Color()
+        });
+
+        mountain1 = new THREE.Mesh(triangleGeometry, material);
+        mountain1.position.y = -400;
+        mountain1.position.x = -400;
+
+
+        scene.add(mountain1);
+
+      }
+
+      function Mountain2() {
+        const triangleGeometry = new THREE.BufferGeometry();
+        const vertices = [
+          0, 700, 0,
+          -600, -600, 0,
+          600, -600, 0
+        ];
+        const indices = [
+          0, 1, 2
+        ];
+
+        triangleGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+
+        triangleGeometry.setIndex(indices);
+
+        const material = new THREE.MeshBasicMaterial({
+          color: Color()
+        });
+
+        mountain2 = new THREE.Mesh(triangleGeometry, material);
+        mountain2.position.y = -400;
+        mountain2.position.x = 0;
+
+
+        scene.add(mountain2);
+
+      }
+
+      function Mountain3() {
+        const triangleGeometry = new THREE.BufferGeometry();
+        const vertices = [
+          0, 300, 0,
+          -800, -800, 0,
+          800, -800, 0
+        ];
+        const indices = [
+          0, 1, 2
+        ];
+
+        triangleGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+
+
+        triangleGeometry.setIndex(indices);
+
+        const material = new THREE.MeshBasicMaterial({
+          color: Color()
+        });
+        mountain3 = new THREE.Mesh(triangleGeometry, material);
+        mountain3.position.y = -400;
+        mountain3.position.x = 600;
+
+
+        scene.add(mountain3);
+
+      }
+
+      function Snow() {
+        const triangleGeometry = new THREE.BufferGeometry();
+        const vertices = [
+          0, 50, 0,
+          -50, -50, 0,
+          50, -50, 0
+        ];
+        const indices = [
+          0, 1, 2
+        ];
+
+        triangleGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+
+
+        triangleGeometry.setIndex(indices);
+
+        const material = new THREE.MeshBasicMaterial({
+          color: 0xffffff
+        });
+        snow = new THREE.Mesh(triangleGeometry, material);
+        snow.position.y = 248;
+        snow.position.x = 0;
+
+
+        scene.add(snow);
+
+      }
+
+      function createGrass() {
+        const geometry = new THREE.PlaneGeometry(10000, 200, 1)
+        const material = new THREE.MeshBasicMaterial({
+          color: 0x90EE90
+        });
+        grass = new THREE.Mesh(geometry, material);
+        grass.position.y = -700;
+        scene.add(grass);
+      }
+
+      function createGrassblades() {
+        grassGroup = new THREE.Group();
+        const grassWidth = 10;
+        const grassHeight = 80;
+        const gap = 10;
+
+        for (let i = 0; i < 80; i++) {
+          const geometry = new THREE.PlaneGeometry(grassWidth, grassHeight, 1);
+          const material = new THREE.MeshBasicMaterial({
+            color: 0x90EE90
+          });
+          const rec2 = new THREE.Mesh(geometry, material);
+          rec2.position.y = -600;
+          rec2.position.x = -790 + (grassWidth + gap) * i;
+          grassGroup.add(rec2);
+        }
+
+        scene.add(grassGroup);
+      }
+
+      function Trunk() {
+        const geometry = new THREE.PlaneGeometry(50, 250, 1)
+        const material = new THREE.MeshBasicMaterial({
+          color: 0xa5633c
+        });
+        trunk = new THREE.Mesh(geometry, material);
+        trunk.position.y = -550;
+        trunk.position.x = 75;
+        scene.add(trunk);
+      }
+
+      function Leaves() {
+        const radiusX = 100;
+        const radiusY = 120;
+        const segments = 64;
+        const ellipseGeometry = new THREE.BufferGeometry();
+
+        const positions = [];
+        for (let i = 0; i <= segments; i++) {
+          const theta = (i / segments) * Math.PI * 2;
+          const x = Math.cos(theta) * radiusX;
+          const y = Math.sin(theta) * radiusY;
+          const z = 0;
+          positions.push(x, y, z);
+        }
+
+        ellipseGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+
+        const indices = [];
+        for (let i = 1; i <= segments; i++) {
+          indices.push(0, i, i === segments ? 1 : i + 1);
+        }
+
+        ellipseGeometry.setIndex(indices);
+
+        const material6 = new THREE.MeshBasicMaterial({
+          color: 0x006400,
+          side: THREE.DoubleSide
+        });
+
+        leaves = new THREE.Mesh(ellipseGeometry, material6);
+        leaves.position.x = 75;
+        leaves.position.y = -400;
+
+        scene.add(leaves);
+      }
+
+      function Color() {
+        const red = Math.floor(Math.random() * 256);
+        const green = Math.floor(Math.random() * 256);
+        const blue = Math.floor(Math.random() * 256);
+        const redHex = red.toString(16).padStart(2, '0');
+        const greenHex = green.toString(16).padStart(2, '0');
+        const blueHex = blue.toString(16).padStart(2, '0');
+        const hexColor = `#${redHex}${greenHex}${blueHex}`;
+
+        return hexColor;
+      }
+
+      function Sun() {
+        const geometry = new THREE.CircleGeometry(100, 100);
+        const material = new THREE.MeshBasicMaterial({
+          color: 0xffff00
+        });
+        sun = new THREE.Mesh(geometry, material);
+        scene.add(sun);
+
+        sun.position.x = 150;
+        sun.position.y = 500;
+
+
+      }
+
+      function Apples() {
+        const geometry = new THREE.CircleGeometry(10, 10);
+        const material = new THREE.MeshBasicMaterial({
+          color: 0xFF0000
+        });
+
+        appleGroup = new THREE.Group();
+        const apples = [];
+
+        for (let i = 0; i < 11; i++) {
+          const apple = new THREE.Mesh(geometry, material);
+          apples.push(apple);
+        }
+
+
+        apples[0].position.set(150, -450, 0);
+        apples[1].position.set(120, -470, 0);
+        apples[2].position.set(20, -450, 0);
+        apples[3].position.set(85, -430, 0);
+        apples[4].position.set(60, -400, 0);
+        apples[5].position.set(49, -380, 0);
+        apples[6].position.set(20, -335, 0);
+        apples[7].position.set(150, -350, 0);
+        apples[8].position.set(60, -350, 0);
+        apples[9].position.set(120, -335, 0);
+        apples[10].position.set(125, -375, 0);
+
+        apples.forEach(apple => {
+          appleGroup.add(apple);
+        });
+
+        scene.add(appleGroup);
+      }
+
+      function fallingApple() {
+        const geometry = new THREE.CircleGeometry(10, 10);
+        const material = new THREE.MeshBasicMaterial({
+          color: 0xFF0000
+        });
+        apple = new THREE.Mesh(geometry, material);
+        scene.add(apple);
+        apple.position.x = 150;
+        apple.position.y = -400;
+
+        animateAppleFall();
+      }
+
+      function animateAppleFall() {
+        const fallSpeed = 9;
+
+        apple.position.y -= fallSpeed;
+
+
+        if (apple.position.y < -700) {
+          apple.position.y = -400;
+        }
+
+        renderer.render(scene, camera);
+
+        requestAnimationFrame(animateAppleFall);
+      }
+
+      function Birds() {
+        const material = new THREE.LineBasicMaterial({
+          color: 0x000000
+        });
+        const gap = 10;
+        birdsGroup = new THREE.Group();
+        let a = 20;
+        let b = 0;
+        let c = -20;
+
+        for (let i = 0; i < 5; i++) {
+          const startPoint1 = new THREE.Vector3(a, -i * gap, 0);
+          const endPoint1 = new THREE.Vector3(b, -20 - i * gap, 0);
+          const points1 = [startPoint1, endPoint1];
+          const lineGeometry1 = new THREE.BufferGeometry().setFromPoints(points1);
+          const line1 = new THREE.Line(lineGeometry1, material);
+          birdsGroup.add(line1);
+          const startPoint2 = new THREE.Vector3(c, -i * gap, 0);
+          const endPoint2 = new THREE.Vector3(b, -20 - i * gap, 0);
+          a = a + 100;
+          b = b + 100;
+          c = c + 100;
+          const points2 = [startPoint2, endPoint2];
+          const lineGeometry2 = new THREE.BufferGeometry().setFromPoints(points2);
+          const line2 = new THREE.Line(lineGeometry2, material);
+          birdsGroup.add(line2);
+        }
+
+        scene.add(birdsGroup);
+
+        function moveBirds() {
+          birdsGroup.position.x -= 4;
+          if (birdsGroup.position.x < -800) {
+            birdsGroup.position.x = 750;
+          }
+        }
+
+        function animateBirds() {
+          moveBirds();
+          requestAnimationFrame(animateBirds);
+        }
+
+        animateBirds();
+      }
+
+      function Cloud() {
+        const radiusX = 100;
+        const radiusY = 50
+        const segments = 64;
+        const ellipseGeometry = new THREE.BufferGeometry();
+
+        const positions = [];
+        for (let i = 0; i <= segments; i++) {
+          const theta = (i / segments) * Math.PI * 2;
+          const x = Math.cos(theta) * radiusX;
+          const y = Math.sin(theta) * radiusY;
+          const z = 0;
+          positions.push(x, y, z);
+        }
+
+        ellipseGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+
+        const indices = [];
+        for (let i = 1; i <= segments; i++) {
+          indices.push(0, i, i === segments ? 1 : i + 1);
+        }
+
+        ellipseGeometry.setIndex(indices);
+
+        const material = new THREE.MeshBasicMaterial({
+          color: 0xffffff,
+          side: THREE.DoubleSide
+        });
+
+        cloud = new THREE.Mesh(ellipseGeometry, material);
+        cloud.position.x = -750
+        cloud.position.y = 450;
+
+        scene.add(cloud);
+
+
+        function moveEllipse() {
+          cloud.position.x += 3;
+
+
+          if (cloud.position.x > 750) {
+            cloud.position.x = -750;
+          }
+        }
+
+        function animateEllipse() {
+          moveEllipse();
+          requestAnimationFrame(animateEllipse);
+        }
+
+        animateEllipse();
+      }
+
+
+      init();
+      let originalPositions = {};
+
+      function storeOriginalPositions() {
+        originalPositions = {
+          mountain1: mountain1.position.clone(),
+          mountain2: mountain2.position.clone(),
+          mountain3: mountain3.position.clone(),
+          snow: snow.position.clone(),
+          grass: grass.position.clone(),
+          grassGroup: grassGroup.position.clone(),
+          trunk: trunk.position.clone(),
+          leaves: leaves.position.clone(),
+          sun: sun.position.clone(),
+          appleGroup: appleGroup.position.clone(),
+
+          birdsGroup: birdsGroup.position.clone(),
+          cloud: cloud.position.clone()
+        };
+      }
+
+      function setOriginalPositions() {
+        mountain1.position.copy(originalPositions.mountain1);
+        mountain2.position.copy(originalPositions.mountain2);
+        mountain3.position.copy(originalPositions.mountain3);
+        snow.position.copy(originalPositions.snow);
+        grass.position.copy(originalPositions.grass);
+        grassGroup.position.copy(originalPositions.grassGroup);
+        trunk.position.copy(originalPositions.trunk);
+        leaves.position.copy(originalPositions.leaves);
+        sun.position.copy(originalPositions.sun);
+        appleGroup.position.copy(originalPositions.appleGroup);
+        birdsGroup.position.copy(originalPositions.birdsGroup);
+        cloud.position.copy(originalPositions.cloud);
+
+      }
+      storeOriginalPositions();
+
+
+      function animate(event) {
+        requestAnimationFrame(() => animate(event));
+
+        if (event) {
+          const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+          const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+
+          // Group One
+          sun.position.x = originalPositions.sun.x + mouseX * 2;
+          sun.position.y = originalPositions.sun.y + mouseY * 2;
+          //Group Two
+          mountain2.position.x = originalPositions.mountain2.x + mouseX * 6;
+          mountain2.position.y = originalPositions.mountain2.y + mouseY * 6;
+          snow.position.x = originalPositions.snow.x + mouseY * 6;
+          snow.position.y = originalPositions.snow.y + mouseY * 6;
+          //Group Three
+          mountain3.position.x = originalPositions.mountain3.x + mouseX * 10;
+          mountain3.position.y = originalPositions.mountain3.y + mouseY * 10;
+          mountain1.position.x = originalPositions.mountain1.x + mouseX * 10;
+          mountain1.position.y = originalPositions.mountain1.y + mouseY * 10;
+          //Group Four
+          grass.position.x = originalPositions.grass.x + mouseX * 14;
+          grass.position.y = originalPositions.grass.y + mouseY * 14;
+          grassGroup.position.x = originalPositions.grassGroup.x + mouseX * 14;
+          grassGroup.position.y = originalPositions.grassGroup.y + mouseY * 14;
+          trunk.position.x = originalPositions.trunk.x + mouseX * 14;
+          trunk.position.y = originalPositions.trunk.y + mouseY * 14;
+          leaves.position.x = originalPositions.leaves.x + mouseX * 14;
+          leaves.position.y = originalPositions.leaves.y + mouseY * 14;
+          appleGroup.position.x = originalPositions.appleGroup.x + mouseX * 14;
+          appleGroup.position.y = originalPositions.appleGroup.y + mouseY * 14;
+
+
+          //  birds, birdsGroup
+          renderer.render(scene, camera);
+        }
+      }
+
+      animate();
+
+      // Handle mousemove event to trigger the animation
+      window.addEventListener('mousemove', animate);
+
+
+      function render() {
+        renderer.render(scene, camera);
+      }
+
+      //window.onload = init;
+
+    </script>
+  </body>
+
+</html>
