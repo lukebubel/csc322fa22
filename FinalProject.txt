@@ -451,22 +451,6 @@
           cloud: cloud.position.clone()
         };
       }
-
-      function setOriginalPositions() {
-        mountain1.position.copy(originalPositions.mountain1);
-        mountain2.position.copy(originalPositions.mountain2);
-        mountain3.position.copy(originalPositions.mountain3);
-        snow.position.copy(originalPositions.snow);
-        grass.position.copy(originalPositions.grass);
-        grassGroup.position.copy(originalPositions.grassGroup);
-        trunk.position.copy(originalPositions.trunk);
-        leaves.position.copy(originalPositions.leaves);
-        sun.position.copy(originalPositions.sun);
-        appleGroup.position.copy(originalPositions.appleGroup);
-        birdsGroup.position.copy(originalPositions.birdsGroup);
-        cloud.position.copy(originalPositions.cloud);
-
-      }
       storeOriginalPositions();
 
 
@@ -478,29 +462,29 @@
           const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
 
           // Group One
-          sun.position.x = originalPositions.sun.x + mouseX * 2;
-          sun.position.y = originalPositions.sun.y + mouseY * 2;
+          sun.position.x = originalPositions.sun.x + mouseX * 5;
+          sun.position.y = originalPositions.sun.y + mouseY * 5;
           //Group Two
-          mountain2.position.x = originalPositions.mountain2.x + mouseX * 6;
-          mountain2.position.y = originalPositions.mountain2.y + mouseY * 6;
-          snow.position.x = originalPositions.snow.x + mouseY * 6;
-          snow.position.y = originalPositions.snow.y + mouseY * 6;
+          mountain2.position.x = originalPositions.mountain2.x + mouseX * 10;
+          mountain2.position.y = originalPositions.mountain2.y + mouseY * 10;
+          snow.position.x = originalPositions.snow.x + mouseY * 10;
+          snow.position.y = originalPositions.snow.y + mouseY * 10;
           //Group Three
-          mountain3.position.x = originalPositions.mountain3.x + mouseX * 10;
-          mountain3.position.y = originalPositions.mountain3.y + mouseY * 10;
-          mountain1.position.x = originalPositions.mountain1.x + mouseX * 10;
-          mountain1.position.y = originalPositions.mountain1.y + mouseY * 10;
+          mountain3.position.x = originalPositions.mountain3.x + mouseX * 20;
+          mountain3.position.y = originalPositions.mountain3.y + mouseY * 20;
+          mountain1.position.x = originalPositions.mountain1.x + mouseX * 20;
+          mountain1.position.y = originalPositions.mountain1.y + mouseY * 20;
           //Group Four
-          grass.position.x = originalPositions.grass.x + mouseX * 14;
-          grass.position.y = originalPositions.grass.y + mouseY * 14;
-          grassGroup.position.x = originalPositions.grassGroup.x + mouseX * 14;
-          grassGroup.position.y = originalPositions.grassGroup.y + mouseY * 14;
-          trunk.position.x = originalPositions.trunk.x + mouseX * 14;
-          trunk.position.y = originalPositions.trunk.y + mouseY * 14;
-          leaves.position.x = originalPositions.leaves.x + mouseX * 14;
-          leaves.position.y = originalPositions.leaves.y + mouseY * 14;
-          appleGroup.position.x = originalPositions.appleGroup.x + mouseX * 14;
-          appleGroup.position.y = originalPositions.appleGroup.y + mouseY * 14;
+          grass.position.x = originalPositions.grass.x + mouseX * 30;
+          grass.position.y = originalPositions.grass.y + mouseY * 30;
+          grassGroup.position.x = originalPositions.grassGroup.x + mouseX * 30;
+          grassGroup.position.y = originalPositions.grassGroup.y + mouseY * 30;
+          trunk.position.x = originalPositions.trunk.x + mouseX * 30;
+          trunk.position.y = originalPositions.trunk.y + mouseY * 30;
+          leaves.position.x = originalPositions.leaves.x + mouseX * 30;
+          leaves.position.y = originalPositions.leaves.y + mouseY * 30;
+          appleGroup.position.x = originalPositions.appleGroup.x + mouseX * 30;
+          appleGroup.position.y = originalPositions.appleGroup.y + mouseY * 30;
 
 
           //  birds, birdsGroup
